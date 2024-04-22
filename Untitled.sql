@@ -250,5 +250,182 @@ where
     AND PHIEUNHAP.SoPN IS NULL;
 
 
+
+
+# 20.Cho biết khách hàng có tổng trị giá đơn hàng lớn nhất trong 6 tháng đầu năm
+# 2018.
+
+
+
+
+# 21.Cho biết mã khách hàng và số lượng đơn đặt hàng của mỗi khách hàng.
+select
+    PHIEUXUAT.MaKH,
+    COUNT(distinct PHIEUXUAT.SoPX) as SoLuongDonDatHang
+from
+    PHIEUXUAT
+GROUP BY
+    PHIEUXUAT.MaKH;
+
+
+
+
+
+
+# 22.Cho biết mã nhân viên, tên nhân viên, tên khách hàng kể cả những nhân viên
+# không đại diện bán hàng.
+# Không có cách tránh sự lặp lại họ tên mã nhân viên vì duyệt nhiều lần??
+
+select
+    distinct NHANVIEN.MaNV,
+    NHANVIEN.HoTen as TenNV,
+    KHACHHANG.TenKH
+from
+    NHANVIEN
+left join
+    PHIEUXUAT on NHANVIEN.MaNV = PHIEUXUAT.MaNV
+left join
+    KHACHHANG on PHIEUXUAT.MaKH = KHACHHANG.MaKH;
+
+
+
+
+
+
+# 23.Cho biết số lượng nhân viên nam, số lượng nhân viên nữ
+
+
+select
+    SUM(CasE WHEN NHANVIEN.GioiTinh = "NAM" THEN "NAM" ELSE "NU" END) as SoLuongNam,
+    SUM(CasE WHEN NHANVIEN.GioiTinh = "NU" THEN "NAM" ELSE "NU" END) as SoLuongNu
+from
+    NHANVIEN;
+
+
+
+# 24.Cho biết mã nhân viên, tên nhân viên, số năm làm việc của những nhân viên
+# có thâm niên cao nhất.
+
+select
+    NHANVIEN.MaNV,
+    NHANVIEN.HoTen as TenNV,
+    DATEDIFF(YEAR, NHANVIEN.NgayVaoLam, GETDATE()) as SonamLamViec
+from
+    NHANVIEN
+where
+    DATEDIFF(YEAR, NHANVIEN.NgayVaoLam, GETDATE()) = 
+    (select MAX(DATEDIFF(YEAR, NHANVIEN.NgayVaoLam, GETDATE())) from NHANVIEN);
+
+
+
+
+# 25.Hãy cho biết họ tên của những nhân viên đã đến tuổi về hưu (nam:60 tuổi,
+# nữ: 55 tuổi)
+
+select
+    HoTen
+from
+    NHANVIEN
+where
+    (GioiTinh = "NAM" AND DATEDIFF(YEAR, NgaySinh, GETDATE()) >= 60)
+    OR
+    (GioiTinh = "NU" AND DATEDIFF(YEAR, NgaySinh, GETDATE()) >= 55);
+
+
+
+
+
+
+
+
+
+# 26.Hãy cho biết họ tên của nhân viên và năm về hưu của họ.
+
+select
+    HoTen,
+    CasE 
+        WHEN GioiTinh = 1 THEN DATEADD(YEAR, 60, NgaySinh) ## Nam về hưu ở tuổi 60
+        WHEN GioiTinh = 0 THEN DATEADD(YEAR, 55, NgaySinh) ## Nữ về hưu ở tuổi 55
+    END as NamVeHuu
+from
+    NHANVIEN;
+
+
+
+
+
+
+
+
+# 27.Cho biết tiền thưởng tết dương lịch của từng nhân viên. Biết rằng - thâm
+# niên <1 năm thưởng 200.000 - 1 năm <= thâm niên < 3 năm thưởng
+# 400.000 - 3 năm <= thâm niên < 5 năm thưởng 600.000 - 5 năm <= thâm
+# niên < 10 năm thưởng 800.000 - thâm niên >= 10 năm thưởng 1.000.000
+
+
+
+
+
+
+# 28.Cho biết những sản phẩm thuộc ngành hàng Hóa mỹ phẩm
+select
+    *
+from
+    SANPHAM
+where
+    MaloaiSP = (select MaloaiSP from LOAISP where TenloaiSP = 'Hóa mỹ phẩm');
+
+
+
+
+
+# 29.Cho biết những sản phẩm thuộc loại Quần áo.
+select
+    *
+from
+    SANPHAM
+where
+    MaloaiSP = (select MaloaiSP from LOAISP where TenloaiSP = 'Quần áo');
+
+
+
+
+
+# 30.Cho biết số lượng sản phẩm loại Quần áo.
+select
+    COUNT(*) as SoLuongSanPham
+from
+    SANPHAM
+where
+    MaloaiSP = (select MaloaiSP from LOAISP where TenloaiSP = 'Quần áo');
+
+
+
+
+# 31.Cho biết số lượng loại sản phẩm ngành hàng Hóa mỹ phẩm.
+
+select
+    COUNT(*) as SoLuongLoaiSP
+from
+    LOAISP
+where
+    TenloaiSP = 'Hóa mỹ phẩm';
+
+
+
+# 32.Cho biết số lượng sản phẩm theo từng loại sản phẩm.
+select
+    LOAISP.TenloaiSP as TenLoaiSP,
+    COUNT(SANPHAM.MasP) as SoLuongSanPham
+from
+    LOAISP
+JOIN
+    SANPHAM on LOAISP.MaloaiSP = SANPHAM.MaloaiSP
+GROUP BY
+    LOAISP.TenloaiSP;
+
+
+
+
  
  
