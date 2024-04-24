@@ -1,46 +1,46 @@
 create database tonghop1;
 drop database tonghop1;
 use tonghop1;
-create table Department
+create table if not exists Department
 (
     id   int primary key auto_increment,
     name varchar(100) not null unique check ( LENGTH(name) > 6 )
 );
-create table Levels
+create table if not exists Levels
 (
     id              int primary key auto_increment,
     name            varchar(100) not null unique,
     basicsalary     float        not null check ( basicsalary >= 3500000 ),
     allowanceSalary float default 500000
 );
-create table Employee
+create table if not exists Employee
 (
     id           int primary key auto_increment,
     name         varchar(150) not null,
     email        varchar(150) not null unique check (email REGEXP '^[^@]+@[^@]+\.[^@]{2,}$'),
     phone        varchar(50)  not null unique,
     address      varchar(255),
-    gender       tinyint      not null check ( gender = 1 or gender = 2 or gender = 0),
+    gender       tinyint      not null check ( gender in (1,2,0)),
     birthday     date         not null,
     levelId      int          not null,
     departmentId int          not null,
     foreign key (levelId) references Levels (id),
     foreign key (departmentId) references Department (id)
 );
-create table Timesheet
+create table if not exists Timesheet
 (
     id            int primary key auto_increment,
     attendaceDate date  not null default (curdate()),
     employeeId    int   not null,
-    value         float not null check ( value = 1 or value = 0.5 or value = 2),
+    value         float not null default 1 check ( value in (1,0.5,2)),
     foreign key (employeeId) references Employee (id)
 );
 
-create table Salary
+create table if not exists Salary
 (
     id          int auto_increment primary key,
     employeeId  int   not null,
-    bonusSalary float default '0',
+    bonusSalary float          default 0,
     insurrance  float not null default 0,
     foreign key (employeeId) references Employee (id)
 );
@@ -131,30 +131,37 @@ values ('2024-04-01', 1, 1),
        ('2024-04-10', 3, 1);
 
 delimiter //
+## Khi thêm mớib thì phải tự động thêm mới 10% lương cơ bản
 create trigger auto_create_insurrance
-    before insert on Salary for each row
+    before insert
+    on Salary
+    for each row
 begin
     declare employeeSalary float;
-    select l.basicsalary into employeeSalary from Levels l join Employee E on l.id = E.levelId where E.id = new.employeeId;
-    set new.insurrance = employeeSalary/10;
+    select l.basicsalary
+    into employeeSalary
+    from Levels l
+             join Employee E on l.id = E.levelId
+    where E.id = new.employeeId;
+    set new.insurrance = employeeSalary / 10;
 end;
 //
 delimiter ;
 
-drop trigger  auto_create_insurrance;
-
+drop trigger auto_create_insurrance;
 ;
-select *from Salary;
+select *
+from Salary;
 insert into Salary (employeeId, bonusSalary)
 values (1, 1000000),
-       (2, 1200000 ),
-       (3, 1500000 ),
-       (4, 1000000 ),
-       (5, 1200000 ),
-       (6, 1500000 ),
-       (7, 1200000 ),
-       (8, 1500000 ),
-       (9, 1200000 );
+       (2, 1200000),
+       (3, 1500000),
+       (4, 1000000),
+       (5, 1200000),
+       (6, 1500000),
+       (7, 1200000),
+       (8, 1500000),
+       (9, 1200000);
 
 drop table Salary;
 #Lấy ra danh sách Employee có sắp xếp tăng dần theo Name gồm các cột sau:
@@ -169,28 +176,38 @@ select e.id,
        if(e.gender = 1, 'Nam', (if(e.gender = 0, 'LGBT', 'Nu'))),
        e.birthday,
        FLOOR(DATEDIFF(curdate(), e.birthday) / 365.25) as age,
-       D.name ,
+       D.name,
        e.levelId
 from Employee e
-join Department D on D.id = e.departmentId
-join Levels L on e.levelId = L.id
+         join Department D on D.id = e.departmentId
+         join Levels L on e.levelId = L.id
 order by e.name;
 
 
 
 #Lấy ra danh sách Salary gồm: Id, EmployeeName, Phone, Email,
 # BaseSalary,  BasicSalary, AllowanceSalary, BonusSalary, insurrance, TotalSalary
-select s.id ,E.name, E.phone, E.email, L.basicsalary,L.allowanceSalary,s.bonusSalary, (L.basicsalary+L.allowanceSalary+s.bonusSalary+s2.insurrance)as Tong from Salary s
-join Employee E on E.id = s.employeeId
-join Levels L on L.id = E.levelId
-join Salary S2 on E.id = S2.employeeId;
-
-
+select s.id,
+       E.name,
+       E.phone,
+       E.email,
+       L.basicsalary,
+       L.allowanceSalary,
+       s.bonusSalary,
+       (L.basicsalary + L.allowanceSalary + s.bonusSalary - s.insurrance) as Tong
+from Salary s
+         join Employee E on E.id = s.employeeId
+         join Levels L on L.id = E.levelId;
 
 
 
 
 #Truy vấn danh sách Department gồm: Id, Name, TotalEmployee
+
+    select d.id, d.name, count(e.id)  from Department d join Employee E on d.id = E.departmentId
+    group by d.id;
+
+
 #Cập nhật cột BonusSalary lên 10% cho tất cả các Nhân viên có số ngày
 # công >= 20 ngày trong tháng 10 năm 2020
 
@@ -202,26 +219,20 @@ where s.employeeId in (
     ## Lấy các employeeId từ bảng Timesheet trong tháng 10 năm 2020, những nhân viên có số ngày công lớn hơn 20.
     select t.employeeId
     from Timesheet t
-    where YEAR(t.attendaceDate) = 2020 AND MONTH(t.attendaceDate) = 10 ## Lọc ra các bản ghi trong tháng 10 năm 2020
+    where YEAR(t.attendaceDate) = 2020
+      AND MONTH(t.attendaceDate) = 10 ## Lọc ra các bản ghi trong tháng 10 năm 2020
     group by t.employeeId
     having COUNT(*) > 20 ## Chỉ lấy những nhân viên có số ngày công lớn hơn 20
 );
 
-
-
-
 #Truy vấn xóa Phòng ban chưa có nhân viên nào
-
-delete from Department
-where not exists (
-    select 1
-    from Employee
-    where Employee.departmentId = Department.id
-);
-
-
+delete
+from Department D
+where d.id not in (select distinct e.departmentId
+                   from Employee e);
 
 #Yêu cầu 2 ( Sử dụng lệnh SQL tạo View )
+
 #View v_getEmployeeinfo thực hiện lấy ra danh sách Employee  gồm: Id, Name,
 # Email, Phone, Address, Gender, BirthDay, DepartmentNamr, LevelName, Trong đó cột
 # Gender hiển thị như sau:
@@ -230,24 +241,22 @@ where not exists (
 
 
 create view v_getEmployeeinfo as
-select
-    e.id,
-    e.name,
-    e.email,
-    e.phone,
-    e.address,
-    case e.gender
-        when 1 then 'Nam'
-        when 0 then 'Nữ'
-        else 'LGBT'
-        end as Gender,
-    e.birthday,
-    d.name as DepartmentName,
-    l.name as LevelName
-from
-    Employee e
-        JOin Department d ON e.departmentId = d.id
-        JOin Levels l ON e.levelId = l.id;
+select e.id,
+       e.name,
+       e.email,
+       e.phone,
+       e.address,
+       case e.gender
+           when 1 then 'Nam'
+           when 0 then 'Nữ'
+           else 'LGBT'
+           end as Gender,
+       e.birthday,
+       d.name  as DepartmentName,
+       l.name  as LevelName
+from Employee e
+         join Department d on e.departmentId = d.id
+         join Levels l on e.levelId = l.id;
 
 
 
@@ -258,10 +267,10 @@ from
 create view v_getEmployeeSalaryMax as
 select E.id, E.name, E.email, E.phone, E.birthday, SUM(T.value) as TotalDay
 from Employee E
-         JOin Timesheet T ON E.id = T.employeeId
+         join Timesheet T on E.id = T.employeeId
+where month(T.attendaceDate) = 4
 group by E.id, E.name, E.email, E.phone, E.birthday
-having TotalDay > 18;
-
+having TotalDay > 3;
 
 
 
@@ -273,14 +282,14 @@ having TotalDay > 18;
 delimiter //
 
 create procedure addEmployeetinfo(
-    in emp_name varchar(150),
-    in emp_email varchar(150),
-    in emp_phone varchar(50),
-    in emp_address varchar(255),
-    in emp_gender tinyint,
-    in emp_birthday date,
-    in emp_levelId int,
-    in emp_departmentId int
+    emp_name varchar(150),
+    emp_email varchar(150),
+    emp_phone varchar(50),
+    emp_address varchar(255),
+    emp_gender tinyint,
+    emp_birthday date,
+    emp_levelId int,
+    emp_departmentId int
 )
 begin
     insert into Employee (name, email, phone, address, gender, birthday, levelId, departmentId)
@@ -288,6 +297,8 @@ begin
 end //
 
 delimiter ;
+call  addEmployeetinfo('Lê Văn C', 'levanc@example.com', '135792468',   '789 Đường XYZ,
+Quận DEF,Thành phố HCM', 1, '1985-03-03', 3, 1);
 
 
 #Thủ tục getSalaryByEmployeeId hiển thị danh sách các bảng lương từng nhân viên
@@ -295,16 +306,50 @@ delimiter ;
 # AllowanceSalary, BonusSalary, insurrance, TotalDay, TotalSalary (trong đó TotalDay
 # là tổng số ngày công, TotalSalary là tổng số lương thực lãnh)
 
+delimiter //
+create procedure getSalaryByEmployeeId(
+    employeeId int
+)
+begin
+    select s.id,
+           E.name,
+           E.phone,
+           E.email,
+           L.basicsalary,
+           L.allowanceSalary,
+           s.bonusSalary,
+           (L.basicsalary + L.allowanceSalary + s.bonusSalary - s.insurrance)*sum(value)/24 as Tong
+    from Salary s
+             join Employee E on E.id = s.employeeId
+             join Levels L on L.id = E.levelId
+            join Timesheet T on E.id = T.employeeId
+    where month( month(attendaceDate) = 4 and year(curdate()) = year(attendaceDate)
+    group by s.id,attendaceDate );
+end
+// delimiter
+    ;
+
 
 #Khi gọi thủ tục truyền vào id của nhân viên
 #Thủ tục getEmployeePaginate lấy ra danh sách nhân viên có phân trang gồm: Id, Name,
 # Email, Phone, Address, Gender, BirthDay, Khi gọi thủ tuc truyền vào limit và page
-
+#
+#     create procedure getEmployeePaginate( page int , size int)
+#     begin
+#         declare off_set int;
+#         set
+#     end;
 
 #Yêu cầu 4 ( Sử dụng lệnh SQL tạo Trigger )
 #Tạo trigger tr_Check_ insurrance_value sao cho khi thêm hoặc sửa trên bảng Salary nếu
 # cột insurrance có giá trị != 10% của BasicSalary thì không cho thêm mới hoặc chỉnh sửa
-# và in thông báo ‘Giá trị cảu insurrance phải = 10% của BasicSalary’
+# và in thông báo ‘Giá trị cảu insurrance phải = 10% của BasicSalary
+ #   create trigger tr_Check_insurrance_value
+#before insert on Salary
+       #    for each row begin select Levels.basicsalary from Levels join Employee E on Levels.id = E.levelId
+  #  where e.id = NEW.employeeId ;
+
+
 
 
 #Tạo trigger tr_check_basic_salary khi thêm mới hoặc chỉnh sửa bảng Levels nếu giá trị
