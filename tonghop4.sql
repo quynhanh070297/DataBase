@@ -26,7 +26,6 @@ create table if not exists Room
 
 
 
-
 create table if not exists Customer
 (
     id          int primary key auto_increment,
@@ -106,11 +105,11 @@ delimiter ;
 
 # Bảng Category ít nhất là 5 bản ghi dữ liệu phù hợp
 insert into Category (name)
-value ('Standard'),
-       ('Deluxe'),
-       ('Suite'),
-       ('Penthouse'),
-       ('Economy');
+    value ('Standard'),
+    ('Deluxe'),
+    ('Suite'),
+    ('Penthouse'),
+    ('Economy');
 
 
 # Bảng Room Ít nhất 15 bản ghi dữ liệu phù hợp
@@ -139,7 +138,8 @@ insert into Booking (customer_Id, status, bookingdate)
 values (1, 1, '2024-04-25 10:00:00'),
        (2, 1, '2024-04-26 11:00:00'),
        (3, 1, '2024-04-27 12:00:00');
-select * from Booking;
+select *
+from Booking;
 
 ## Chèn dữ liệu cho các chi tiết đặt phòng (Booking_detail)
 ## Hóa đơn 1: Đặt phòng cho khách hàng 1
@@ -192,9 +192,8 @@ from Customer c;
 # Truy vấn xóa các sản phẩm chưa được bán
 delete
 from Room
-where id not in (
-select distinct Booking_detail.room_id
-from Booking_detail);
+where id not in (select distinct Booking_detail.room_id
+                 from Booking_detail);
 
 # Cập nhật Cột SalePrice tăng thêm 10% cho tất cả các phòng có Price >= 250000
 update Room
@@ -212,18 +211,18 @@ limit 10;
 # View v_getBookingList hiển thị danh sách phiếu đặt hàng gồm: Id, BookingDate, Status, CusName, Email, Phone,TotalAmount
 # ( Trong đó cột Status nếu = 0 Chưa duyệt, = 1  Đã duyệt, = 2 Đã thanh toán, = 3 Đã hủy )
 create view v_getBookingList as
-select B.id as Id,
-       B.bookingdate as BookingDate,
-       case 
+select B.id                         as Id,
+       B.bookingdate                as BookingDate,
+       case
            when B.status = 0 then 'Chưa duyệt'
            when B.status = 1 then 'Đã duyệt'
            when B.status = 2 then 'Đã thanh toán'
            when B.status = 3 then 'Đã hủy'
            else 'Trạng thái không xác định'
-           end as Status,
-       C.name as CusName,
-       C.email as Email,
-       C.phone as Phone,
+           end                      as Status,
+       C.name                       as CusName,
+       C.email                      as Email,
+       C.phone                      as Phone,
        (select SUM(BD.price)
         from Booking_detail BD
         where BD.Booking_id = B.id) as TotalAmount
@@ -256,7 +255,7 @@ create procedure getBookingByCustomerId(
     in p_customer_id int
 )
 begin
-    select B.id as Id,
+    select B.id          as Id,
            B.bookingdate as BookingDate,
            CasE
                when B.status = 0 then 'Chưa duyệt'
@@ -264,7 +263,7 @@ begin
                when B.status = 2 then 'Đã thanh toán'
                when B.status = 3 then 'Đã hủy'
                ELSE 'Trạng thái không xác định'
-               end as Status,
+               end       as Status,
            SUM(BD.price) as TotalAmount
     from Booking B
              join Booking_detail BD on B.id = BD.Booking_id
@@ -278,7 +277,7 @@ delimiter ;
 # Khi gọi thủ tuc truyền vào limit và page
 delimiter //
 create procedure getRoomPaginate2(
-      in page_in int
+    in page_in int
 )
 begin
     select * from Room limit page_in ,5;
@@ -298,10 +297,57 @@ delimiter //
 #     from Room
 #     order by id
 #     limit p_limit OFFset offset_val;
-# end //
+# end
+//
 #
 # delimiter ;
 
 # Yêu cầu 4 ( Sử dụng lệnh SQL tạo Trigger )
-# Tạo trigger tr_Check_Price_Value sao cho khi thêm hoặc sửa phòng Room nếu nếu giá trị của cột Price > 5000000 thì tự động chuyển về 5000000 và in ra thông báo ‘Giá phòng lớn nhất 5 triệu’
-# Tạo trigger tr_check_Room_NotAllow khi thực hiện đặt pòng, nếu ngày đến (StartDate) và ngày đi (endDate) của đơn hiện tại mà phòng đã có người đặt rồi thì báo lỗi “Phòng này đã có người đặt trong thời gian này, vui lòng chọn thời gian khác”
+# Tạo trigger tr_Check_Price_Value sao cho khi thêm hoặc sửa phòng Room nếu nếu giá trị của
+# cột Price > 5000000 thì tự động chuyển về 5000000 và in ra thông báo ‘Giá phòng lớn nhất 5 triệu’
+
+delimiter //
+create trigger tr_Check_Price_Value
+    before insert
+    on Room
+    for each row
+    begin
+        if NEW.price > 5000000 then
+            set  NEW.price = 5000000 ;
+        end if;
+    end //
+delimiter //
+
+delimiter //
+create trigger tr_Check_Price_Value
+    before update
+    on Room
+    for each row
+begin
+    if NEW.price > 5000000 then
+        set  NEW.price = 5000000 ;
+    end if;
+end //
+delimiter //
+
+# Tạo trigger tr_check_Room_NotAllow khi thực hiện đặt pòng, nếu ngày đến (StartDate) và ngày
+# đi (endDate) của đơn hiện tại mà phòng đã có người đặt rồi thì báo lỗi “Phòng này đã có người
+# đặt trong thời gian này, vui lòng chọn thời gian khác”
+
+delimiter //
+create trigger tr_check_Room_NotAllow
+    before insert
+    on Booking_detail
+    for each row
+begin
+    if
+        (NEW.start_date >= any (select d.start_date  from Booking_detail d join Room R on d.room_id = R.id where NEW.room_id = d.room_id) and
+       NEW.start_date <= any (select d.end_date  from Booking_detail d join Room R on d.room_id = R.id where NEW.room_id = d.room_id))or
+     (  NEW.end_date <= any (select d.end_date from Booking_detail d join Room R on d.room_id = R.id where NEW.room_id = d.room_id) and
+       NEW.end_date >= any (select d.start_date from Booking_detail d join Room R on d.room_id = R.id where NEW.room_id = d.room_id) )
+    then signal sqlstate  '45000'set message_text = 'Toang roi cu';
+    end if;
+end //
+delimiter //
+
+select * from Booking_detail;

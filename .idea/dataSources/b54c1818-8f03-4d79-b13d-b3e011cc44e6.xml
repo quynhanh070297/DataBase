@@ -997,11 +997,11 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <Charset>utf8mb4</Charset>
     </collation>
     <schema id="288" parent="1" name="QLKS">
-      <LastIntrospectionLocalTimestamp>2024-04-25.08:37:54</LastIntrospectionLocalTimestamp>
+      <LastIntrospectionLocalTimestamp>2024-04-25.09:41:43</LastIntrospectionLocalTimestamp>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </schema>
     <schema id="289" parent="1" name="QLKS2">
-      <LastIntrospectionLocalTimestamp>2024-04-25.08:37:54</LastIntrospectionLocalTimestamp>
+      <LastIntrospectionLocalTimestamp>2024-04-25.09:41:43</LastIntrospectionLocalTimestamp>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </schema>
     <schema id="290" parent="1" name="QuanLyDiem">
@@ -1505,238 +1505,244 @@ price</ColNames>
       <SourceTextLength>170</SourceTextLength>
       <Turn>before-row</Turn>
     </trigger>
-    <check id="401" parent="316" name="category_chk_1">
+    <trigger id="401" parent="315" name="tr_check_Room_NotAllow">
+      <Definer>root@localhost</Definer>
+      <Events>I</Events>
+      <SourceTextLength>646</SourceTextLength>
+      <Turn>before-row</Turn>
+    </trigger>
+    <check id="402" parent="316" name="category_chk_1">
       <Predicate>`status` in (0,1)</Predicate>
     </check>
-    <column id="402" parent="316" name="id">
+    <column id="403" parent="316" name="id">
       <AutoIncrement>1</AutoIncrement>
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="403" parent="316" name="name">
+    <column id="404" parent="316" name="name">
       <DasType>varchar(100)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="404" parent="316" name="status">
+    <column id="405" parent="316" name="status">
       <DasType>tinyint|0s</DasType>
       <DefaultExpression>1</DefaultExpression>
       <Position>3</Position>
     </column>
-    <index id="405" parent="316" name="PRIMARY">
+    <index id="406" parent="316" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="406" parent="316" name="name">
+    <index id="407" parent="316" name="name">
       <ColNames>name</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="407" parent="316" name="PRIMARY">
+    <key id="408" parent="316" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <key id="408" parent="316" name="name">
+    <key id="409" parent="316" name="name">
       <UnderlyingIndexName>name</UnderlyingIndexName>
     </key>
-    <check id="409" parent="317" name="customer_chk_1">
+    <check id="410" parent="317" name="customer_chk_1">
       <Predicate>`gender` in (0,1)</Predicate>
     </check>
-    <column id="410" parent="317" name="id">
+    <column id="411" parent="317" name="id">
       <AutoIncrement>1</AutoIncrement>
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="411" parent="317" name="name">
+    <column id="412" parent="317" name="name">
       <DasType>varchar(150)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="412" parent="317" name="email">
+    <column id="413" parent="317" name="email">
       <DasType>varchar(150)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
-    <column id="413" parent="317" name="phone">
+    <column id="414" parent="317" name="phone">
       <DasType>varchar(50)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="414" parent="317" name="address">
+    <column id="415" parent="317" name="address">
       <DasType>varchar(255)|0s</DasType>
       <Position>5</Position>
     </column>
-    <column id="415" parent="317" name="gender">
+    <column id="416" parent="317" name="gender">
       <DasType>tinyint|0s</DasType>
       <DefaultExpression>1</DefaultExpression>
       <Position>6</Position>
     </column>
-    <column id="416" parent="317" name="create_date">
+    <column id="417" parent="317" name="create_date">
       <DasType>date|0s</DasType>
       <DefaultExpression>(curdate())</DefaultExpression>
       <Position>7</Position>
     </column>
-    <column id="417" parent="317" name="birthday">
+    <column id="418" parent="317" name="birthday">
       <DasType>date|0s</DasType>
       <NotNull>1</NotNull>
       <Position>8</Position>
     </column>
-    <index id="418" parent="317" name="PRIMARY">
+    <index id="419" parent="317" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="419" parent="317" name="phone">
+    <index id="420" parent="317" name="phone">
       <ColNames>phone</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="420" parent="317" name="PRIMARY">
+    <key id="421" parent="317" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <key id="421" parent="317" name="phone">
+    <key id="422" parent="317" name="phone">
       <UnderlyingIndexName>phone</UnderlyingIndexName>
     </key>
-    <check id="422" parent="318" name="room_chk_2">
+    <check id="423" parent="318" name="room_chk_2">
       <Predicate>`price` &gt; 100000</Predicate>
     </check>
-    <check id="423" parent="318" name="room_chk_1">
+    <check id="424" parent="318" name="room_chk_1">
       <Predicate>`status` in (0,1)</Predicate>
     </check>
-    <column id="424" parent="318" name="id">
+    <column id="425" parent="318" name="id">
       <AutoIncrement>1</AutoIncrement>
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="425" parent="318" name="name">
+    <column id="426" parent="318" name="name">
       <DasType>varchar(150)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="426" parent="318" name="status">
+    <column id="427" parent="318" name="status">
       <DasType>tinyint|0s</DasType>
       <DefaultExpression>1</DefaultExpression>
       <Position>3</Position>
     </column>
-    <column id="427" parent="318" name="price">
+    <column id="428" parent="318" name="price">
       <DasType>float|0s</DasType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="428" parent="318" name="sale_price">
+    <column id="429" parent="318" name="sale_price">
       <DasType>float|0s</DasType>
       <DefaultExpression>0</DefaultExpression>
       <Position>5</Position>
     </column>
-    <column id="429" parent="318" name="create_date">
+    <column id="430" parent="318" name="create_date">
       <DasType>date|0s</DasType>
       <DefaultExpression>(curdate())</DefaultExpression>
       <Position>6</Position>
     </column>
-    <column id="430" parent="318" name="category_id">
+    <column id="431" parent="318" name="category_id">
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>7</Position>
     </column>
-    <foreign-key id="431" parent="318" name="KN_Room1">
+    <foreign-key id="432" parent="318" name="KN_Room1">
       <ColNames>category_id</ColNames>
       <RefColNames>id</RefColNames>
       <RefTableName>Category</RefTableName>
       <RefTableParentName>qlks2</RefTableParentName>
     </foreign-key>
-    <index id="432" parent="318" name="PRIMARY">
+    <index id="433" parent="318" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="433" parent="318" name="create_date">
+    <index id="434" parent="318" name="create_date">
       <ColNames>create_date
 name
 price</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="434" parent="318" name="KN_Room1">
+    <index id="435" parent="318" name="KN_Room1">
       <ColNames>category_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="435" parent="318" name="PRIMARY">
+    <key id="436" parent="318" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <trigger id="436" parent="318" name="check_sale_price_before_insert_update">
+    <trigger id="437" parent="318" name="check_sale_price_before_insert_update">
       <Definer>root@localhost</Definer>
       <Events>I</Events>
       <SourceTextLength>170</SourceTextLength>
       <Turn>before-row</Turn>
     </trigger>
-    <column id="437" parent="319" name="Id">
+    <column id="438" parent="319" name="Id">
       <DasType>int|0s</DasType>
       <Position>1</Position>
     </column>
-    <column id="438" parent="319" name="BookingDate">
+    <column id="439" parent="319" name="BookingDate">
       <DasType>datetime|0s</DasType>
       <Position>2</Position>
     </column>
-    <column id="439" parent="319" name="Status">
+    <column id="440" parent="319" name="Status">
       <DasType>varchar(25)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
-    <column id="440" parent="319" name="CusName">
+    <column id="441" parent="319" name="CusName">
       <DasType>varchar(150)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="441" parent="319" name="Email">
+    <column id="442" parent="319" name="Email">
       <DasType>varchar(150)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>5</Position>
     </column>
-    <column id="442" parent="319" name="Phone">
+    <column id="443" parent="319" name="Phone">
       <DasType>varchar(50)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>6</Position>
     </column>
-    <column id="443" parent="319" name="TotalAmount">
+    <column id="444" parent="319" name="TotalAmount">
       <DasType>double|0s</DasType>
       <Position>7</Position>
     </column>
-    <column id="444" parent="320" name="id">
+    <column id="445" parent="320" name="id">
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="445" parent="320" name="name">
+    <column id="446" parent="320" name="name">
       <DasType>varchar(150)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="446" parent="320" name="status">
+    <column id="447" parent="320" name="status">
       <DasType>tinyint|0s</DasType>
       <Position>3</Position>
     </column>
-    <column id="447" parent="320" name="price">
+    <column id="448" parent="320" name="price">
       <DasType>float|0s</DasType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="448" parent="320" name="sale_price">
+    <column id="449" parent="320" name="sale_price">
       <DasType>float|0s</DasType>
       <Position>5</Position>
     </column>
-    <column id="449" parent="320" name="create_date">
+    <column id="450" parent="320" name="create_date">
       <DasType>date|0s</DasType>
       <Position>6</Position>
     </column>
-    <column id="450" parent="320" name="category_id">
+    <column id="451" parent="320" name="category_id">
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>7</Position>

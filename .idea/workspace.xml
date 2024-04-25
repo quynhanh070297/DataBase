@@ -5,11 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0c2f32b9-ed60-4ced-b50d-b5dd9f460b7f" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/13f35d46-2f41-4509-9bca-0d30d0309a8e.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/13f35d46-2f41-4509-9bca-0d30d0309a8e.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/b54c1818-8f03-4d79-b13d-b3e011cc44e6.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/b54c1818-8f03-4d79-b13d-b3e011cc44e6.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/b54c1818-8f03-4d79-b13d-b3e011cc44e6/storage_v2/_src_/schema/QLKS2.zx-ZBA.zip" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/b54c1818-8f03-4d79-b13d-b3e011cc44e6/storage_v2/_src_/schema/QLKS2.zx-ZBA.zip" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/console_1.sql" beforeDir="false" afterPath="$PROJECT_DIR$/console_1.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,7 +70,7 @@
       <workItem from="1714028110883" duration="87000" />
       <workItem from="1714028212457" duration="261000" />
       <workItem from="1714028475891" duration="4000" />
-      <workItem from="1714028603588" duration="6382000" />
+      <workItem from="1714028603588" duration="10491000" />
     </task>
     <servers />
   </component>
