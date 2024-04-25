@@ -5,7 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0c2f32b9-ed60-4ced-b50d-b5dd9f460b7f" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/13f35d46-2f41-4509-9bca-0d30d0309a8e.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/13f35d46-2f41-4509-9bca-0d30d0309a8e.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/console_1.sql" beforeDir="false" afterPath="$PROJECT_DIR$/console_1.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,15 +44,16 @@
   },
   &quot;keyToStringList&quot;: {
     &quot;DatabaseDriversLRU&quot;: [
-      &quot;mysql_aurora_aws&quot;,
-      &quot;mysql&quot;
+      &quot;mysql&quot;,
+      &quot;mysql_aurora_aws&quot;
     ]
   }
 }</component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="jdk-21.0.2-openjdk-21.0.2-4caba194b151-322ed176" />
+        <option value="bundled-jdk-9f38398b9061-18abd8497189-intellij.indexing.shared.core-IU-241.14494.240" />
+        <option value="bundled-js-predefined-1d06a55b98c1-74d2a5396914-JavaScript-IU-241.14494.240" />
       </set>
     </attachedChunks>
   </component>
@@ -63,6 +68,11 @@
       <workItem from="1713318868577" duration="9880000" />
       <workItem from="1713449307881" duration="611000" />
       <workItem from="1713510483521" duration="1251000" />
+      <workItem from="1714022745064" duration="1841000" />
+      <workItem from="1714028110883" duration="87000" />
+      <workItem from="1714028212457" duration="261000" />
+      <workItem from="1714028475891" duration="4000" />
+      <workItem from="1714028603588" duration="6382000" />
     </task>
     <servers />
   </component>

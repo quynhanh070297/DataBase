@@ -343,7 +343,7 @@ end
 #Yêu cầu 4 ( Sử dụng lệnh SQL tạo Trigger )
 #Tạo trigger tr_Check_ insurrance_value sao cho khi thêm hoặc sửa trên bảng Salary nếu
 # cột insurrance có giá trị != 10% của BasicSalary thì không cho thêm mới hoặc chỉnh sửa
-# và in thông báo ‘Giá trị cảu insurrance phải = 10% của BasicSalary
+# và in thông báo Giá trị cảu insurrance phải = 10% của BasicSalary
  #   create trigger tr_Check_insurrance_value
 #before insert on Salary
        #    for each row begin select Levels.basicsalary from Levels join Employee E on Levels.id = E.levelId

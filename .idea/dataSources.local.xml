@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="dataSourceStorageLocal" created-in="IU-233.14475.28">
+  <component name="dataSourceStorageLocal" created-in="IU-241.14494.240">
     <data-source name="@localhost" uuid="13f35d46-2f41-4509-9bca-0d30d0309a8e">
       <database-info product="MySQL" version="8.3.0" jdbc-version="4.2" driver-name="MySQL Connector/J" driver-version="mysql-connector-j-8.2.0 (Revision: 06a1f724497fd81c6a659131fda822c9e5085b6c)" dbms="MYSQL" exact-version="8.3.0" exact-driver-version="8.2">
         <extra-name-characters>#@</extra-name-characters>
@@ -15,6 +15,25 @@
             <name qname="demoDataBase" />
             <name qname="thisDataBase" />
             <name qname="category" />
+          </node>
+        </introspection-scope>
+      </schema-mapping>
+    </data-source>
+    <data-source name="@localhost [2]" uuid="b54c1818-8f03-4d79-b13d-b3e011cc44e6">
+      <database-info product="MySQL" version="8.3.0" jdbc-version="4.2" driver-name="Amazon Web Services (AWS) JDBC Driver for MySQL" driver-version="aws-mysql-connector-java-1.1.9 (Revision: 122bff765e786a47605d9586910f911cb87f3733)" dbms="MYSQL" exact-version="8.3.0" exact-driver-version="1.1">
+        <extra-name-characters>#@</extra-name-characters>
+        <identifier-quote-string>`</identifier-quote-string>
+        <jdbc-catalog-is-schema>true</jdbc-catalog-is-schema>
+      </database-info>
+      <case-sensitivity plain-identifiers="mixed" quoted-identifiers="mixed" />
+      <secret-storage>master_key</secret-storage>
+      <user-name>root</user-name>
+      <schema-mapping>
+        <introspection-scope>
+          <node kind="schema">
+            <name qname="@" />
+            <name qname="QLKS" />
+            <name qname="QLKS2" />
           </node>
         </introspection-scope>
       </schema-mapping>
